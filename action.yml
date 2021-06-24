@@ -1,5 +1,6 @@
-name: 'Scaleway S3 Bucket Website Action'
+name: 'Scaleway S3 Bucket Website Deploy'
 description: 'Will deploy files into Scaleway S3 Bucket and enable bucket website with configuration'
+author: 'Matthias Prost'
 inputs:
   SCW_ACCESS_KEY:
     description: 'Scaleway Access Key of the project'
