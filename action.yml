@@ -25,11 +25,11 @@ inputs:
     required: true
   SOURCE_DIRECTORY:
     description: 'Root path of the source folder that will be sync with your bucket.'
-    required: false
+    required: true
     default: '.'
   SYNC_ARGS:
     description: 'Arguments you can add to s3 sync.'
-    required: false
+    required: true
     default: '--delete'
 runs:
   using: docker

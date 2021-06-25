@@ -14,6 +14,7 @@ set -euo pipefail
 : "${WEBSITE_CONFIG_PATH?WEBSITE_CONFIG_PATH environment variable must be set. Should be path from root project.}"
 : "${BUCKET_POLICY_CONFIG_PATH?BUCKET_POLICY_CONFIG_PATH environment variable must be set. Should be path from root project.}"
 : "${SOURCE_DIRECTORY?SOURCE_DIRECTORY environment variable must be set. Should be path from root project of the directory you want to sync with s3 bucket.}"
+: "${SYNC_ARGS?SYNC_ARGS environment variable must be set. If you do not want to set any args please set an empty string.}"
 
 mkdir -p ~/.aws
 
@@ -54,6 +55,12 @@ fi
 
 echo "Starting sync..."
 aws s3 sync "${SOURCE_DIRECTORY}" s3://"${BUCKET_NAME}" "${SYNC_ARGS}" >"${GITHUB_WORKSPACE}/aws.output"
+
+if [ $? -eq 0 ]; then
+      echo "Sync bucket successfully!"
+else
+      echo $?
+fi
 
 # Write output to STDOUT
 cat "${GITHUB_WORKSPACE}/aws.output"
