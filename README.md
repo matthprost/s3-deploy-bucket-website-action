@@ -37,9 +37,9 @@ env -i \
 
 **BUCKET_NAME**: Name of your bucket.
 
-**WEBSITE_CONFIG_PATH**: Root path of your bucket website configuration file. It should be a `.json`. You can find an example in this repo `.example.bucket-website.json`.
+**WEBSITE_CONFIG_PATH**: Root path of your bucket website configuration file. It should be a `.json`. You can find an example file [here](.example.bucket-website.json).
 
-**BUCKET_POLICY_CONFIG_PATH**: Root path of your bucket website policy file. It should be a `.json.tpl`. You can fin an example in this repo `.example.bucket-policy.tpl`.
+**BUCKET_POLICY_CONFIG_PATH**: Root path of your bucket website policy file. It should be a `.json.tpl`. You can find an example file [here](.example.bucket-website.json).
 
 **SOURCE_DIRECTORY**: This is the root path of the files that will be uploaded to your S3 Bucket.
 
