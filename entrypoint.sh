@@ -9,6 +9,7 @@ set -euo pipefail
 : "${S3_ACCESS_KEY?S3_ACCESS_KEY environment variable must be set}"
 : "${S3_SECRET_KEY?S3_SECRET_KEY environment variable must be set}"
 : "${S3_ENDPOINT?S3_ENDPOINT environment variable must be set. Ex: s3.fr-par.scw.cloud}"
+: "${S3_REGION?S3_REGION environment variable must be set. Ex: fr-par}"
 : "${BUCKET_NAME?BUCKET_NAME environment variable must be set}"
 : "${WEBSITE_CONFIG_PATH?WEBSITE_CONFIG_PATH environment variable must be set. Should be path from root project.}"
 : "${BUCKET_POLICY_CONFIG_PATH?BUCKET_POLICY_CONFIG_PATH environment variable must be set. Should be path from root project.}"
@@ -23,7 +24,7 @@ echo "
 endpoint = awscli_plugin_endpoint
 
 [default]
-endpoint = ${S3_ENDPOINT}
+region = ${S3_REGION}
 s3 =
   endpoint_url = https://${S3_ENDPOINT}
   signature_version = s3v4

@@ -11,6 +11,9 @@ inputs:
   S3_ENDPOINT:
     description: 'Endpoint of your S3 bucket. Ex: s3.fr-par.scw.cloud'
     required: true
+  S3_REGION:
+    description: 'Region of your S3 bucket. Ex: fr-par'
+    required: true
   BUCKET_NAME:
     description: 'Enter a bucket name there. Bucket will be created if not existing.'
     required: true
