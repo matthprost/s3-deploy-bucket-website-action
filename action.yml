@@ -1,12 +1,12 @@
-name: 'Scaleway S3 Bucket Website Deploy'
-description: 'Will deploy files into Scaleway S3 Bucket and enable bucket website with configuration'
+name: 'S3 Bucket Website Deploy'
+description: 'Will deploy files into S3 Bucket and enable bucket website with given configuration'
 author: 'Matthias Prost'
 inputs:
   S3_ACCESS_KEY:
-    description: 'Scaleway Access Key of the project'
+    description: 'S3 Key of the project'
     required: true
   S3_SECRET_KEY:
-    description: 'Scaleway Secret Key of the project'
+    description: 'S3 Secret Key of the project'
     required: true
   S3_ENDPOINT:
     description: 'Endpoint of your S3 bucket. Ex: s3.fr-par.scw.cloud'
