@@ -42,6 +42,7 @@ aws s3 mb s3://"${BUCKET_NAME}" >"${GITHUB_WORKSPACE}/aws.output"
 
 if [ $? -eq 0 ]; then
     aws s3api put-bucket-website --bucket "${BUCKET_NAME}" --website-configuration file://"${WEBSITE_CONFIG_PATH}" >"${GITHUB_WORKSPACE}/aws.output"
+    sed -e "s/BUCKET_NAME/'${BUCKET_NAME}'/g" "${BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
     aws s3api put-bucket-policy --bucket "${BUCKET_NAME}" --policy file://"${BUCKET_POLICY_CONFIG_PATH}" >"${GITHUB_WORKSPACE}/aws.output"
 else
     echo "Bucket already created"
