@@ -38,20 +38,22 @@ echo "[default]
 aws_access_key_id = ${S3_ACCESS_KEY}
 aws_secret_access_key = ${S3_SECRET_KEY}" > ~/.aws/credentials
 
-echo "Trying to create bucket..." >"${GITHUB_WORKSPACE}/aws.output"
+echo "Trying to create bucket..."
+
+set +e
 aws s3 mb s3://"${BUCKET_NAME}"
 
 if [ $? -eq 0 ]; then
-    echo "Bucket created! Applying bucket website config and policy..." >"${GITHUB_WORKSPACE}/aws.output"
+    echo "Bucket created! Applying bucket website config and policy..."
     aws s3api put-bucket-website --bucket "${BUCKET_NAME}" --website-configuration file://"${WEBSITE_CONFIG_PATH}" >"${GITHUB_WORKSPACE}/aws.output"
     sed -e "s/BUCKET_NAME/'${BUCKET_NAME}'/g" "${BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
-    aws s3api put-bucket-policy --bucket "${BUCKET_NAME}" --policy file://"${BUCKET_POLICY_CONFIG_PATH}" >"${GITHUB_WORKSPACE}/aws.output"
+    aws s3api put-bucket-policy --bucket "${BUCKET_NAME}" --policy file://./bucket-policy.json >"${GITHUB_WORKSPACE}/aws.output"
 else
-    echo "Bucket already created." >"${GITHUB_WORKSPACE}/aws.output"
+    echo "Bucket already created."
 fi
 
-echo "Starting sync..." >"${GITHUB_WORKSPACE}/aws.output"
-aws s3 sync ./"${SOURCE_DIRECTORY}" s3://"${BUCKET_NAME}" "${SYNC_ARGS}" >"${GITHUB_WORKSPACE}/aws.output"
+echo "Starting sync..."
+aws s3 sync "${SOURCE_DIRECTORY}" s3://"${BUCKET_NAME}" "${SYNC_ARGS}" >"${GITHUB_WORKSPACE}/aws.output"
 
 # Write output to STDOUT
 cat "${GITHUB_WORKSPACE}/aws.output"
