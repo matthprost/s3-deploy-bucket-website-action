@@ -1,5 +1,5 @@
 # scw-s3-bucket-website-action
-Action to easily deploy any files on your S3 Bucket Website.
+Action that will create a bucket if it doesn't exist and upload your files into it.
 
 Here is process in order:
 
