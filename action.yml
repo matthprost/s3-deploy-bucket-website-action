@@ -2,16 +2,15 @@ name: 'Scaleway S3 Bucket Website Deploy'
 description: 'Will deploy files into Scaleway S3 Bucket and enable bucket website with configuration'
 author: 'Matthias Prost'
 inputs:
-  SCW_ACCESS_KEY:
+  S3_ACCESS_KEY:
     description: 'Scaleway Access Key of the project'
     required: true
-  SCW_SECRET_KEY:
+  S3_SECRET_KEY:
     description: 'Scaleway Secret Key of the project'
     required: true
-  SCW_REGION:
-    description: 'Region of Scaleway Bucket.'
-    required: false
-    default: ${{ inputs.SCW_REGION }}
+  S3_ENDPOINT:
+    description: 'Endpoint of your S3 bucket. Ex: s3.fr-par.scw.cloud'
+    required: true
   BUCKET_NAME:
     description: 'Enter a bucket name there. Bucket will be created if not existing.'
     required: true
@@ -21,50 +20,14 @@ inputs:
   BUCKET_POLICY_CONFIG_PATH:
     description: 'Root path of the file that contains configuration bucket website policies, should be a .json.tql. See example file in repository'
     required: true
+  SOURCE_DIRECTORY:
+    description: 'Root path of the source folder that will be sync with your bucket.'
+    required: false
+    default: '.'
+  SYNC_ARGS:
+    description: 'Arguments you can add to s3 sync.'
+    required: false
+    default: '--delete'
 runs:
-  using: "composite"
-  steps:
-    - name: S3 Create Bucket
-      id: createBucket
-      uses: remyleone/scw-s3-action@v0.0.2
-      with:
-        args: s3 mb s3://${{ inputs.BUCKET_NAME }}
-      env:
-        SCW_ACCESS_KEY: ${{ inputs.SCW_ACCESS_KEY }}
-        SCW_SECRET_KEY: ${{ inputs.SCW_SECRET_KEY }}
-        SCW_REGION: ${{ inputs.SCW_REGION }}
-      continue-on-error: true
-
-    - name: S3 Enable Bucket Website
-        uses: remyleone/scw-s3-action@v0.0.2
-        with:
-          args: s3api put-bucket-website --bucket ${{ inputs.BUCKET_NAME }} --website-configuration file://${{ WEBSITE_CONFIG_PATH }}
-        env:
-          SCW_ACCESS_KEY: ${{ inputs.SCW_ACCESS_KEY }}
-          SCW_SECRET_KEY: ${{ inputs.SCW_SECRET_KEY }}
-          SCW_REGION: ${{ inputs.SCW_REGION }}
-        if: steps.createBucket.outcome == 'success'
-
-    - name: Configure Bucket Policies
-        run: sed -e "s/BUCKET_NAME/${{ inputs.BUCKET_NAME }}/g" ./${{ BUCKET_POLICY_CONFIG_PATH }} > bucket-policy.json
-        if: steps.createBucket.outcome == 'success'
-
-    - name: S3 Set Bucket Policies
-        uses: remyleone/scw-s3-action@v0.0.2
-        with:
-          args: s3api put-bucket-policy --bucket ${{ inputs.BUCKET_NAME }} --policy file://bucket-policy.json
-        env:
-          SCW_ACCESS_KEY: ${{ inputs.SCW_ACCESS_KEY }}
-          SCW_SECRET_KEY: ${{ inputs.SCW_SECRET_KEY }}
-          SCW_REGION: ${{ inputs.SCW_REGION }}
-        if: steps.createBucket.outcome == 'success'
-
-    - name: S3 Deploy
-        uses: remyleone/scw-s3-action@v0.0.2
-        with:
-          args: s3 sync ./out s3://${{ inputs.BUCKET_NAME }} --delete
-        env:
-          SCW_ACCESS_KEY: ${{ inputs.SCW_ACCESS_KEY }}
-          SCW_SECRET_KEY: ${{ inputs.SCW_SECRET_KEY }}
-          SCW_REGION: ${{ inputs.SCW_REGION }}
-        if: success() || failure()
+  using: docker
+  image: Dockerfile
