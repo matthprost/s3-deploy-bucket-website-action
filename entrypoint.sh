@@ -56,11 +56,5 @@ fi
 echo "Starting sync..."
 aws s3 sync "${SOURCE_DIRECTORY}" s3://"${BUCKET_NAME}" "${SYNC_ARGS}" >"${GITHUB_WORKSPACE}/aws.output"
 
-if [ $? -eq 0 ]; then
-      echo "Sync bucket successfully!"
-else
-      echo $?
-fi
-
 # Write output to STDOUT
 cat "${GITHUB_WORKSPACE}/aws.output"

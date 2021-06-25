@@ -24,3 +24,15 @@ env -i \
   SYNC_ARGS="--delete" \
   ./entrypoint.sh
 ```
+
+### Variables
+
+**S3_ACCESS_KEY**: S3 access key. \
+**S3_SECRET_KEY**: S3 secret key. \
+**S3_ENDPOINT**: S3 full endpoint. Ex: **s3.fr-par.scw.cloud** or **s3.us-west-2.amazonaws.com**
+**S3_REGION**: Region of your bucket. Ex: **fr-par** or **nl-ams** or **us-west** \
+**BUCKET_NAME**: Name of your bucket. \
+**WEBSITE_CONFIG_PATH**: Root path of your bucket website configuration file. It should be a `.json`. You can find an example in this repo `.example.bucket-website.json`.
+**BUCKET_POLICY_CONFIG_PATH**: Root path of your bucket website policy file. It should be a `.json.tpl`. You can fin an example in this repo `.example.bucket-policy.tpl`.
+**SOURCE_DIRECTORY**: This is the root path of the files that will be uploaded to your S3 Bucket. \
+**SYNC_ARGS**: Arguments that will be added in sync command: `aws s3 sync ./ s3://bucket-name ${SYNC_ARGS}`
