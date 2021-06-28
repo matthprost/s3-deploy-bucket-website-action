@@ -14,5 +14,5 @@ RUN mkdir /s3-default-config-file
 COPY .bucket-website.json /s3-default-config-file/
 COPY .bucket-policy.json.tpl /s3-default-config-file/
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "help" ]
