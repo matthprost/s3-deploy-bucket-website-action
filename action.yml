@@ -19,19 +19,19 @@ inputs:
     required: true
   WEBSITE_CONFIG_PATH:
     description: 'Root path of the file that contains configuration for bucket website, should be a .json. See example file in repository.'
-    required: true
+    required: false
     default: './s3-default-config-file/.bucket-website.json'
   BUCKET_POLICY_CONFIG_PATH:
     description: 'Root path of the file that contains configuration bucket website policies, should be a .json.tql. See example file in repository'
-    required: true
+    required: false
     default: './s3-default-config-file/.bucket-policy.json.tpl'
   SOURCE_DIRECTORY:
     description: 'Root path of the source folder that will be sync with your bucket.'
-    required: true
+    required: false
     default: '.'
   SYNC_ARGS:
     description: 'Arguments you can add to s3 sync.'
-    required: true
+    required: false
     default: '--delete'
 runs:
   using: docker
