@@ -44,14 +44,11 @@ echo "Trying to create bucket..."
 set +e
 aws s3 mb s3://"${INPUT_BUCKET_NAME}"
 
-if [ $? -eq 0 ]; then
-    echo "Bucket created! Applying bucket website config and policy..."
-    aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${INPUT_WEBSITE_CONFIG_PATH}"
-    sed -e "s/BUCKET_NAME/${INPUT_BUCKET_NAME}/g" "${INPUT_BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
-    aws s3api put-bucket-policy --bucket "${INPUT_BUCKET_NAME}" --policy file://./bucket-policy.json
-else
-    echo "Bucket already created."
-fi
+echo "Bucket created! Applying bucket website config and policy..."
+aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${INPUT_WEBSITE_CONFIG_PATH}"
+sed -e "s/BUCKET_NAME/${INPUT_BUCKET_NAME}/g" "${INPUT_BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
+aws s3api put-bucket-policy --bucket "${INPUT_BUCKET_NAME}" --policy file://./bucket-policy.json
+
 
 echo "Starting sync..."
 aws s3 sync "${INPUT_SOURCE_DIRECTORY}" s3://"${INPUT_BUCKET_NAME}" "${INPUT_SYNC_ARGS}"
