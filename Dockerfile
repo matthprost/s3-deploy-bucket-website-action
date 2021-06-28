@@ -10,5 +10,8 @@ RUN python3 -m pip --no-cache-dir install awscli==${AWSCLI_VERSION}
 RUN python3 -m pip --no-cache-dir install awscli_plugin_endpoint
 
 COPY entrypoint.sh /
+RUN mkdir s3-default-config-file
+COPY .bucket-policy.json.tpl .bucket-website.json ./s3-default-config-file/
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "help" ]
