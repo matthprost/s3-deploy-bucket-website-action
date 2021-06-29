@@ -1,12 +1,12 @@
 name: 'S3 Bucket Website Deploy'
-description: 'Will deploy files into S3 Bucket and enable bucket website with given configuration'
+description: 'Create a S3 bucket (if not existing), enable bucket website with given configuration and deploy your files into it.'
 author: 'Matthias Prost'
 inputs:
   S3_ACCESS_KEY:
-    description: 'S3 Key of the project'
+    description: 'S3 access key'
     required: true
   S3_SECRET_KEY:
-    description: 'S3 Secret Key of the project'
+    description: 'S3 secret key'
     required: true
   S3_ENDPOINT:
     description: 'Endpoint of your S3 bucket. Ex: s3.fr-par.scw.cloud'
@@ -30,7 +30,7 @@ inputs:
     required: false
     default: '.'
   SYNC_ARGS:
-    description: 'Arguments you can add to s3 sync.'
+    description: 'Arguments you can add to S3 sync command.'
     required: false
     default: '--delete'
 runs:
