@@ -55,6 +55,5 @@ aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configura
 sed -e "s/BUCKET_NAME/${INPUT_BUCKET_NAME}/g" "${INPUT_BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
 aws s3api put-bucket-policy --bucket "${INPUT_BUCKET_NAME}" --policy file://./bucket-policy.json
 
-
 echo "Starting sync..."
-aws s3 sync "${INPUT_SOURCE_DIRECTORY}" s3://"${INPUT_BUCKET_NAME}" "${INPUT_SYNC_ARGS}"
+aws s3 sync "${INPUT_SOURCE_DIRECTORY}" s3://"${INPUT_BUCKET_NAME}" ${INPUT_SYNC_ARGS}
