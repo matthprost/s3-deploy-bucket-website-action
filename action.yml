@@ -33,6 +33,9 @@ inputs:
     description: 'Arguments you can add to S3 sync command.'
     required: false
     default: '--delete'
+  INPUT_COMPRESS_TOOL:
+    description: 'Compress your files from SOURCE_DIRECTORY before uploading them into your bucket. Only gzip available.'
+    required: false
 runs:
   using: docker
   image: Dockerfile

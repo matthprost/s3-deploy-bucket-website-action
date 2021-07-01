@@ -4,7 +4,7 @@
 # ORIGINAL AUTHOR: Remy Leone https://github.com/remyleone/scw-s3-action
 #
 
-set -euo pipefail
+set -eo pipefail
 
 : "${INPUT_S3_ACCESS_KEY?INPUT_S3_ACCESS_KEY environment variable must be set}"
 : "${INPUT_S3_SECRET_KEY?INPUT_S3_SECRET_KEY environment variable must be set}"
@@ -54,6 +54,12 @@ echo "Applying bucket website config and policy..."
 aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${INPUT_WEBSITE_CONFIG_PATH}"
 sed -e "s/BUCKET_NAME/${INPUT_BUCKET_NAME}/g" "${INPUT_BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
 aws s3api put-bucket-policy --bucket "${INPUT_BUCKET_NAME}" --policy file://./bucket-policy.json
+
+if [ "$INPUT_COMPRESS_TOOL" != "" ] && [ "$INPUT_COMPRESS_TOOL" = "gzip" ]
+then
+      echo "Compressing file using ${INPUT_COMPRESS_TOOL}"
+      gzip -9 -r "${INPUT_SOURCE_DIRECTORY}"
+fi
 
 echo "Starting sync..."
 aws s3 sync "${INPUT_SOURCE_DIRECTORY}" s3://"${INPUT_BUCKET_NAME}" ${INPUT_SYNC_ARGS}
