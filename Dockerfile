@@ -2,13 +2,12 @@
 # ORIGINAL AUTHOR: Remy Leone https://github.com/remyleone/scw-s3-action
 #
 
-FROM python:3-alpine
+FROM python:3-buster
 
 ENV AWSCLI_VERSION='1.19.27'
 
 RUN python3 -m pip --no-cache-dir install awscli==${AWSCLI_VERSION}
 RUN python3 -m pip --no-cache-dir install awscli_plugin_endpoint
-RUN python3 -m pip --no-cache-dir install gzip
 
 COPY entrypoint.sh /
 RUN mkdir /s3-default-config-file
