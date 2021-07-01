@@ -2,7 +2,7 @@
 # ORIGINAL AUTHOR: Remy Leone https://github.com/remyleone/scw-s3-action
 #
 
-FROM python:3-buster
+FROM python:3-alpine
 
 ENV AWSCLI_VERSION='1.19.27'
 
@@ -14,4 +14,5 @@ RUN mkdir /s3-default-config-file
 COPY .bucket-website.json /s3-default-config-file/
 COPY .bucket-policy.json.tpl /s3-default-config-file/
 
+ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "help" ]

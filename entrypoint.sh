@@ -58,6 +58,7 @@ aws s3api put-bucket-policy --bucket "${INPUT_BUCKET_NAME}" --policy file://./bu
 if [ "$INPUT_COMPRESS_TOOL" != "" ] && [ "$INPUT_COMPRESS_TOOL" = "gzip" ]
 then
       echo "Compressing file using ${INPUT_COMPRESS_TOOL}"
+      apk add gzip
       gzip -9 -r "${INPUT_SOURCE_DIRECTORY}"
 fi
 
