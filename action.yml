@@ -33,7 +33,7 @@ inputs:
     description: 'Arguments you can add to S3 sync command.'
     required: false
     default: '--delete'
-  INPUT_COMPRESS_TOOL:
+  COMPRESS_TOOL:
     description: 'Compress your files from SOURCE_DIRECTORY before uploading them into your bucket. Only gzip available, if empty no compression is done.'
     required: false
 runs:
