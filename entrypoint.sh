@@ -58,7 +58,7 @@ if [ "$INPUT_COMPRESS_TOOL" != "" ] && [ "$INPUT_COMPRESS_TOOL" = "gzip" ]; then
       gzip -9 -r "${INPUT_SOURCE_DIRECTORY}"
 
       # Rename all *.gz to original name
-      for f in *.gz; do
+      for f in ${INPUT_SOURCE_DIRECTORY}/*.gz; do
           mv -- "$f" "${f%.gz}"
       done
 
