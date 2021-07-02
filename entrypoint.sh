@@ -51,17 +51,21 @@ fi
 
 HEADER=""
 
+# Check if compress tool is given - only gzip from now
 if [ "$INPUT_COMPRESS_TOOL" != "" ] && [ "$INPUT_COMPRESS_TOOL" = "gzip" ]; then
       echo "Compressing file using ${INPUT_COMPRESS_TOOL}"
       apk add gzip
       gzip -9 -r "${INPUT_SOURCE_DIRECTORY}"
+
       HEADER="--content-encoding=$INPUT_COMPRESS_TOOL"
+
       if [ "$INPUT_WEBSITE_CONFIG_PATH" = "" ]; then
         INPUT_WEBSITE_CONFIG_PATH="/s3-default-config-file/.bucket-website-gzip.json"
       fi
 fi
 
-CONFIG_FILE_PATH=[[ $INPUT_WEBSITE_CONFIG_PATH != "" ]] && echo $INPUT_WEBSITE_CONFIG_PATH || echo "/s3-default-config-file/.bucket-website.json"
+# Check if bucket website config is set, if not we set default one
+[ $INPUT_WEBSITE_CONFIG_PATH != "" ] && CONFIG_FILE_PATH="$INPUT_WEBSITE_CONFIG_PATH" || CONFIG_FILE_PATH="/s3-default-config-file/.bucket-website.json"
 
 echo "Applying bucket website config and policy..."
 aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${CONFIG_FILE_PATH}"
