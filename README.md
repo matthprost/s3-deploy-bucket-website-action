@@ -47,7 +47,7 @@ env -i \
 
 **INPUT_SYNC_ARGS**: Arguments that will be added in sync command: `aws s3 sync ./ s3://bucket-name ${SYNC_ARGS}`
 
-**INPUT_COMPRESS_TOOL**: You can specify a compression tool that will be applied to your file before uploading them. This is optional parameter. Only `gzip` available.
+**INPUT_COMPRESS_TOOL**: You can specify a compression tool that will be applied to your file before uploading them. Action will automatically add encoding header if this option is set. This is optional parameter. Only `gzip` available.
 
 ## Contributions
 
