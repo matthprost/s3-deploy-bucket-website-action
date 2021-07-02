@@ -11,7 +11,6 @@ set -eo pipefail
 : "${INPUT_S3_ENDPOINT?INPUT_S3_ENDPOINT environment variable must be set. Ex: s3.fr-par.scw.cloud}"
 : "${INPUT_S3_REGION?INPUT_S3_REGION environment variable must be set. Ex: fr-par}"
 : "${INPUT_BUCKET_NAME?INPUT_BUCKET_NAME environment variable must be set}"
-: "${INPUT_WEBSITE_CONFIG_PATH?INPUT_WEBSITE_CONFIG_PATH environment variable must be set. Should be path from root project.}"
 : "${INPUT_BUCKET_POLICY_CONFIG_PATH?INPUT_BUCKET_POLICY_CONFIG_PATH environment variable must be set. Should be path from root project.}"
 : "${INPUT_SOURCE_DIRECTORY?INPUT_SOURCE_DIRECTORY environment variable must be set. Should be path from root project of the directory you want to sync with s3 bucket.}"
 : "${INPUT_SYNC_ARGS?INPUT_SYNC_ARGS environment variable must be set. If you do not want to set any args please set an empty string.}"
@@ -62,8 +61,10 @@ if [ "$INPUT_COMPRESS_TOOL" != "" ] && [ "$INPUT_COMPRESS_TOOL" = "gzip" ]; then
       fi
 fi
 
+CONFIG_FILE_PATH=[[ $INPUT_WEBSITE_CONFIG_PATH != "" ]] && echo $INPUT_WEBSITE_CONFIG_PATH || echo "/s3-default-config-file/.bucket-website.json"
+
 echo "Applying bucket website config and policy..."
-aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${[[ $INPUT_WEBSITE_CONFIG_PATH != "" ]] && echo $INPUT_WEBSITE_CONFIG_PATH || echo "/s3-default-config-file/.bucket-website.json"}"
+aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${CONFIG_FILE_PATH}"
 sed -e "s/BUCKET_NAME/${INPUT_BUCKET_NAME}/g" "${INPUT_BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
 aws s3api put-bucket-policy --bucket "${INPUT_BUCKET_NAME}" --policy file://./bucket-policy.json
 
