@@ -57,18 +57,16 @@ if [ "$INPUT_COMPRESS_TOOL" != "" ] && [ "$INPUT_COMPRESS_TOOL" = "gzip" ]; then
       apk add gzip
       gzip -9 -r "${INPUT_SOURCE_DIRECTORY}"
 
-      HEADER="--content-encoding=$INPUT_COMPRESS_TOOL"
+      # Rename all *.gz to original name
+      for f in *.gz; do
+          mv -- "$f" "${f%.gz}"
+      done
 
-      if [ "$INPUT_WEBSITE_CONFIG_PATH" = "" ]; then
-        INPUT_WEBSITE_CONFIG_PATH="/s3-default-config-file/.bucket-website-gzip.json"
-      fi
+      HEADER="--content-encoding=$INPUT_COMPRESS_TOOL"
 fi
 
-# Check if bucket website config is set, if not we set default one
-[ $INPUT_WEBSITE_CONFIG_PATH != "" ] && CONFIG_FILE_PATH="$INPUT_WEBSITE_CONFIG_PATH" || CONFIG_FILE_PATH="/s3-default-config-file/.bucket-website.json"
-
 echo "Applying bucket website config and policy..."
-aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${CONFIG_FILE_PATH}"
+aws s3api put-bucket-website --bucket "${INPUT_BUCKET_NAME}" --website-configuration file://"${INPUT_WEBSITE_CONFIG_PATH}"
 sed -e "s/BUCKET_NAME/${INPUT_BUCKET_NAME}/g" "${INPUT_BUCKET_POLICY_CONFIG_PATH}" > bucket-policy.json
 aws s3api put-bucket-policy --bucket "${INPUT_BUCKET_NAME}" --policy file://./bucket-policy.json
 

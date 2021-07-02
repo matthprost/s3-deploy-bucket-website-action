@@ -5,9 +5,10 @@ Action that will create a bucket if it doesn't exist and upload your files into 
 Here is process in order:
 
 1. Try to create bucket
-2. Set Bucket Website configuration -> **Step skipped if bucket already exist**
-3. Set Website Policy -> **Step skipped if bucket already exist**
-4. Upload files from source folder into bucket
+2. Compress your files using compatible tool (only gzip)(Optional)
+3. Set Bucket Website configuration
+4. Set Website Policy
+5. Upload files from source folder into bucket
 
 ## How to test locally
 
@@ -22,7 +23,8 @@ env -i \
   INPUT_BUCKET_POLICY_CONFIG_PATH=".bucket-policy.json.tpl" \
   INPUT_SOURCE_DIRECTORY="." \
   INPUT_GITHUB_WORKSPACE="." \
-  INPUT_SYNC_ARGS="--delete" ./entrypoint.sh
+  INPUT_SYNC_ARGS="--delete" \
+  INPUT_COMPRESS_TOOL="gzip" ./entrypoint.sh
 ```
 
 ### Variables
@@ -44,6 +46,8 @@ env -i \
 **INPUT_SOURCE_DIRECTORY**: This is the root path of the files that will be uploaded to your S3 Bucket.
 
 **INPUT_SYNC_ARGS**: Arguments that will be added in sync command: `aws s3 sync ./ s3://bucket-name ${SYNC_ARGS}`
+
+**INPUT_COMPRESS_TOOL**: You can specify a compression tool that will be applied to your file before uploading them. This is optional parameter. Only `gzip` available.
 
 ## Contributions
 
