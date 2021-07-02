@@ -1,8 +1,0 @@
-{
-  "ErrorDocument": {
-    "Key": "404.html.gz"
-  },
-  "IndexDocument": {
-    "Suffix": "index.html.gz"
-  }
-}
